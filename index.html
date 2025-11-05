@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovando con HTMX y Django (Presentación Adaptada)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Lato:wght@400;700&family=Consolas:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+
+/* 1. CONFIGURACIÓN GENERAL */
+* {
+  box-sizing: border-box;
+}
+
+/* * MODIFICACIÓN CLAVE PARA LA NAVEGACIÓN:
+ * El body ahora centrará la única diapositiva activa.
+ * El fondo gris se mantiene.
+*/
+body {
+  background-color: #f0f2f5;
+  display: flex; /* Cambiado de grid a flex */
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  margin: 0;
+  min-height: 100vh; /* Asegurar altura completa */
+  padding: 20px 0; /* Mantener el padding original */
+  position: relative; /* Para posicionar las flechas */
+  font-family: 'Lato', sans-serif;
+}
+
+/* * MODIFICACIÓN CLAVE PARA LA NAVEGACIÓN:
+ * Ocultar todas las diapositivas por defecto.
+*/
+.slide-container {
+  display: none; /* Oculto por defecto */
+  align-items: center;
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  flex-direction: column;
+  height: 720px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 60px;
+  position: relative; /* Cambiado de absolute a relative */
+  width: 1280px;
+  flex-shrink: 0; /* Evitar que se encoja */
+}
+
+/* * NUEVA CLASE:
+ * La clase 'active-slide' usará 'display: flex' para mostrar la diapositiva actual.
+*/
+.slide-container.active-slide {
+  display: flex;
+}
+
+/* Decoración sutil de fondo */
+.slide-container::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  background-color: #10b981; /* Color acento */
+  opacity: 0.1;
+  border-radius: 50%;
+  filter: blur(50px);
+  z-index: 0;
+}
+.slide-container::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
+  width: 250px;
+  height: 250px;
+  background-color: #3b82f6; /* Color acento secundario */
+  opacity: 0.1;
+  border-radius: 50%;
+  filter: blur(60px);
+  z-index: 0;
+}
+
+
+.slide-container>* {
+  position: relative;
+  z-index: 1;
+}
+
+/* 2. TIPOGRAFÍA (Sin cambios) */
+
+.slide-container h1,
+.slide-container h2,
+.slide-container h3 {
+  color: #f0f0f0;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+}
+
+.slide-container p,
+.slide-container li,
+.slide-container .subtitle,
+.slide-container .number-label,
+.slide-container .legend li,
+.slide-container .chart-summary,
+.slide-container .bar .label,
+.slide-container th,
+.slide-container td,
+.slide-container .alternating-text-tile p,
+.slide-container .bleed-text-side p,
+.slide-container cite {
+  color: #cccccc;
+  font-family: 'Lato', sans-serif;
+}
+
+.slide-container h1 {
+  font-size: 80px;
+  line-height: 1.1;
+}
+
+.slide-container .slide-title {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  text-align: left;
+  width: 100%;
+  color: #10b981;
+}
+
+.slide-container h3 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #f0f0f0;
+}
+
+.slide-container p,
+.slide-container li,
+.slide-container .subtitle,
+.slide-container .legend li,
+.slide-container .chart-summary,
+.slide-container .bar .label,
+.slide-container th,
+.slide-container td,
+.slide-container .alternating-text-tile p,
+.slide-container .bleed-text-side p {
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+.slide-container .subtitle {
+  font-size: 24px;
+  font-weight: 400;
+  margin: 20px auto;
+  color: #cccccc;
+}
+
+.slide-container .content-area {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  width: 100%;
+}
+
+/* 3. LAYOUTS (Sin cambios) */
+
+/* Title_Slide */
+.title-layout {
+  text-align: center;
+}
+
+/* Section_Title */
+.section-title-layout {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+.section-title-layout h2 {
+  font-size: 72px;
+  margin-bottom: 20px;
+  color: #f0f0f0;
+}
+.section-title-layout .subtitle {
+  font-size: 28px;
+  margin: 0 auto;
+  max-width: 800px;
+}
+.section-title-layout hr {
+  background-color: #10b981;
+  border: none;
+  height: 5px;
+  margin: 30px auto;
+  width: 100px;
+}
+
+/* Two_Column (Base) */
+.two-column {
+  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  width: 100%;
+}
+.two-column ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+.two-column li {
+  margin-bottom: 15px;
+  position: relative;
+  padding-left: 30px;
+}
+.two-column li::before {
+  content: '✓';
+  color: #10b981;
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  left: 0;
+  top: 5px;
+}
+
+/* Rounded_Image_and_Text */
+.rounded-image-layout .image-wrapper {
+  border-radius: 50%;
+  flex-shrink: 0;
+  height: 400px;
+  width: 400px;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 4px solid #10b981;
+}
+.rounded-image-layout .image-wrapper img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+.rounded-image-layout.two-column {
+  align-items: center;
+}
+.rounded-image-layout h3 {
+    font-size: 36px;
+    color: #10b981;
+    margin-bottom: 20px;
+}
+
+/* Image_Right_Text_Left */
+.image-right-layout .image-wrapper {
+  border-radius: 12px;
+  height: 400px;
+  overflow: hidden;
+  width: 100%;
+  border: 2px solid #333;
+}
+.image-right-layout .image-wrapper img {
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+  background-color: #2a2a2a;
+}
+.image-right-layout.two-column {
+  align-items: center;
+}
+
+/* Tiled_Text_With_Icons */
+.tiled-content {
+  align-items: stretch;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  width: 100%;
+}
+.tile {
+  align-items: center;
+  background-color: #2a2a2a;
+  border-radius: 12px;
+  border: 1px solid #444;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+  padding: 30px;
+  text-align: center;
+}
+.tile .icon {
+  color: #10b981;
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+.tile h3 {
+    color: #10b981;
+    font-size: 24px;
+}
+.tile p {
+    font-size: 16px;
+    color: #cccccc;
+}
+
+/* Tiled_Text_With_Icons (4 tiles) */
+.four-tiles .tiled-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+.four-tiles .tile {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
+    padding: 25px;
+}
+.four-tiles .tile .icon {
+    font-size: 36px;
+    margin-right: 20px;
+    margin-bottom: 0;
+}
+.four-tiles .tile-content-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.four-tiles .tile h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+/* Highlighted_Numbers */
+.highlight-numbers-layout>div:first-child {
+  flex: 0 0 40%;
+  text-align: center;
+}
+.highlight-numbers-layout .number {
+  color: #10b981;
+  font-size: 160px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1;
+}
+.highlight-numbers-layout .number-label {
+  font-size: 28px;
+  font-weight: 700;
+  color: #f0f0f0;
+}
+.highlight-numbers-layout.two-column {
+    align-items: center;
+}
+
+/* Styled_Bullet_Points */
+.bullet-list {
+  max-width: 900px;
+  width: 100%;
+}
+.bullet-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.bullet-list li {
+  align-items: flex-start;
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+.bullet-list i {
+  color: #10b981;
+  font-size: 28px;
+  margin-top: 5px;
+  text-align: center;
+  flex-shrink: 0;
+  width: 30px;
+}
+.bullet-list li strong {
+  color: #f0f0f0;
+  font-weight: 700;
+}
+
+/* Tiled_Images */
+.image-tile {
+  flex: 1;
+  text-align: center;
+}
+.image-tile .image-wrapper {
+  height: 250px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #333;
+}
+.image-tile .image-wrapper img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+.image-tile p {
+    font-size: 18px;
+    color: #cccccc;
+}
+
+/* Quote */
+.quote-layout {
+  text-align: center;
+  width: 80%;
+}
+.quote-layout blockquote {
+  color: #f0f0f0;
+  font-size: 48px;
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.4;
+  margin: 0 0 30px 0;
+  padding: 0 40px;
+  position: relative;
+}
+.quote-layout blockquote::before,
+.quote-layout blockquote::after {
+  color: #10b981;
+  content: '"';
+  font-size: 100px;
+  line-height: 0;
+  position: absolute;
+  opacity: 0.5;
+}
+.quote-layout blockquote::before {
+  left: -10px;
+  top: 30px;
+}
+.quote-layout blockquote::after {
+  bottom: 10px;
+  right: -10px;
+}
+.quote-layout cite {
+  color: #cccccc;
+  font-size: 22px;
+  font-style: normal;
+  font-family: 'Lato', sans-serif;
+}
+
+/* Q&A */
+.qa-layout {
+  text-align: center;
+  width: 100%;
+  align-self: center;
+}
+.qa-layout h2 {
+  font-size: 90px;
+  margin-bottom: 20px;
+  color: #10b981;
+}
+.qa-layout p {
+  font-size: 28px;
+  color: #f0f0f0;
+}
+.qa-layout .contact-info {
+  color: #cccccc;
+  font-size: 22px;
+  margin-top: 40px;
+}
+
+/* --- ESTILOS PARA CÓDIGO (Sin cambios) --- */
+pre.code-example {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #444;
+    color: #e0e0e0;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 17px;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    height: 100%;
+}
+pre.code-example .comment {
+    color: #999;
+    font-style: italic;
+}
+pre.code-example .tag {
+    color: #3b82f6; /* Azul */
+}
+pre.code-example .attr {
+    color: #10b981; /* Verde acento */
+}
+pre.code-example .string {
+    color: #f59e0b; /* Naranja */
+}
+pre.code-example .py-keyword {
+    color: #e879f9; /* Rosa/Violeta */
+}
+pre.code-example .py-func {
+    color: #10b981; /* Verde */
+}
+
+.two-column-code {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  width: 100%;
+  align-items: stretch;
+}
+.two-column-code h3 {
+    font-size: 24px;
+    color: #10b981;
+    margin-bottom: 10px;
+}
+
+/* * * ESTILOS PARA EL GRÁFICO COMPARATIVO * * */
+.comparison-chart-layout {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: flex-start;
+    padding-top: 20px;
+}
+.chart-item {
+    width: 100%;
+    margin-bottom: 20px;
+}
+.chart-item h4 {
+    color: #f0f0f0;
+    font-size: 24px;
+    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+}
+.chart-bars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+.bar-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.bar-label {
+    color: #999;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+.bar-outer {
+    height: 15px;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+}
+.bar-inner {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.5s ease-out;
+}
+/* HTMX is Green (Low Complexity = Bueno) */
+.bar-htmx {
+    background: linear-gradient(90deg, #10b981, #059669);
+}
+/* React is Blue (High Complexity = Más Laburo) */
+.bar-react {
+    background: linear-gradient(90deg, #3b82f6, #2563eb);
+}
+/* Legend */
+.chart-legend {
+    display: flex;
+    gap: 50px;
+    margin-top: 20px;
+    font-size: 20px;
+    align-self: center;
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    color: #f0f0f0;
+}
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+.legend-htmx {
+    background-color: #10b981;
+}
+.legend-react {
+    background-color: #3b82f6;
+}
+/* * * FIN ESTILOS PARA EL GRÁFICO COMPARATIVO * * */
+
+/* * * NUEVOS ESTILOS PARA NAVEGACIÓN
+ * */
+
+.nav-arrow {
+  position: fixed; /* Se quedan fijos en la pantalla */
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #f0f0f0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 1000; /* Asegurar que estén por encima de todo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
+.nav-arrow:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+#prev-button {
+  left: 30px; /* Espacio desde la izquierda */
+}
+
+#next-button {
+  right: 30px; /* Espacio desde la derecha */
+}
+
+    </style>
+</head>
+<body>
+
+<!-- 
+  * * BOTONES DE NAVEGACIÓN (Sin cambios)
+  * -->
+<button id="prev-button" class="nav-arrow" aria-label="Diapositiva anterior">
+    <i class="fa-solid fa-chevron-left"></i>
+</button>
+<button id="next-button" class="nav-arrow" aria-label="Siguiente diapositiva">
+    <i class="fa-solid fa-chevron-right"></i>
+</button>
+
+
+<!-- 
+  * * CONTENEDOR DE DIAPOSITIVAS (Contenido Adaptado al Rioplatense)
+  * -->
+
+<!-- Slide 1: Title_Slide -->
+<div class="slide-container" id="slide1">
+    <div class="title-layout">
+        <h1>Innovando con HTMX y Django</h1>
+        <p class="subtitle">Redescubriendo la Web (Menos Complicaciones, Más Agilidad)</p>
+    </div>
+</div>
+
+<!-- Slide 2: Rounded_Image_and_Text (Meme) -->
+<div class="slide-container" id="slide2">
+    <h2 class="slide-title">La Complicación: El Dolor de Cabeza Actual</h2>
+    <div class="content-area">
+        <div class="two-column rounded-image-layout">
+            <div>
+                <div class="image-wrapper">
+                    <img src="https://placehold.co/400x400/10b981/ffffff?text=Meme+Todo+piola+con+node_modules+prendido+fuego" alt="Meme 'Todo piola' con 'node_modules' prendido fuego">
+                </div>
+            </div>
+            <div>
+                <h3>¿Te pasó?</h3>
+                <p>Hacés `git pull`, actualizás dependencias... y de repente, todo se rompe. El frontend y el backend tienen problemas de comunicación, y el equipo pasa mucho tiempo intentando resolver la complejidad entre ellos.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 3: Image_Right_Text_Left (Meme) -->
+<div class="slide-container" id="slide3">
+    <h2 class="slide-title">Lo Complicado de las SPAs</h2>
+    <div class="content-area">
+        <div class="two-column image-right-layout">
+            <div>
+                <!-- Contenido de texto -->
+                <ul>
+                    <li>Arquitectura clásica: React, Vue, Angular.</li>
+                    <li>El Backend se convierte en solo una API (JSON).</li>
+                    <li>El Frontend consume esa API y arma la interfaz.</li>
+                    <li><strong>El Problema:</strong> Demasiada complejidad. Dos equipos, gestión de APIs, sincronización, sobre-ingeniería.</li>
+                    <li>Es una complejidad innecesaria, como usar una máquina pesada para un trabajo simple.</li>
+                </ul>
+            </div>
+            <div>
+                <!-- Imagen/Meme -->
+                <div class="image-wrapper">
+                    <img src="https://placehold.co/400x400/10b981/ffffff?text=Ilustracion+Sobreenjendria+al+toke!" alt="Meme de Juicero representando sobre-ingeniería">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 4: Section_Title -->
+<div class="slide-container" id="slide4">
+    <div class="section-title-layout">
+        <hr>
+        <h2>La Alianza Ideal</h2>
+        <p class="subtitle">Django &lt;3 HTMX<br>Rescatando lo mejor de antes, pero con la agilidad de hoy.</p>
+    </div>
+</div>
+
+<!-- Slide 5: Tiled_Text_With_Icons (4 tiles) -->
+<div class="slide-container" id="slide5">
+    <h2 class="slide-title">¿Cómo Funciona Esta Propuesta?</h2>
+    <div class="content-area four-tiles">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-hand-pointer"></i></div>
+                <div class="tile-content-wrapper">
+                    <h3>1. El Usuario Toca</h3>
+                    <p>Un usuario hace clic en un botón con un atributo HTMX simple (ej: `hx-post`).</p>
+                </div>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-server"></i></div>
+                <div class="tile-content-wrapper">
+                    <h3>2. Pide al Servidor</h3>
+                    <p>HTMX manda una petición a Django (al backend).</p>
+                </div>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-code"></i></div>
+                <div class="tile-content-wrapper">
+                    <h3>3. Django Devuelve HTML</h3>
+                    <p>¡Sin JSON! Django renderiza un *pedacito* de HTML y lo manda de vuelta.</p>
+                </div>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-magic-wand-sparkles"></i></div>
+                <div class="tile-content-wrapper">
+                    <h3>4. HTMX Lo Pone</h3>
+                    <p>HTMX agarra el HTML y lo 'inyecta' donde va en la página. Sin recargar, al instante.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 6: Código HTML -->
+<div class="slide-container" id="slide6">
+    <h2 class="slide-title">Ejemplo de Código: El HTML</h2>
+    <div class="content-area">
+        <div class="two-column-code">
+            <div>
+                <h3>El "JavaScript" que va (en serio):</h3>
+                <pre class="code-example"><span class="comment">&lt;!-- Sí, en serio. Esto es todo el código. --&gt;</span>
+&lt;<span class="tag">script</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/htmx.org@1.9.10"</span>&gt;&lt;/script&gt;</pre>
+                <p style="margin-top: 20px;">Sin builds, sin webpack, sin gigas de `node_modules` (¡qué alivio!).</p>
+            </div>
+            <div>
+                <h3>Tu Template de Django:</h3>
+                <pre class="code-example"><span class="comment">&lt;!-- Un botón normal, pero con superpoderes --&gt;</span>
+&lt;<span class="tag">button</span> 
+  <span class="attr">hx-post</span>=<span class="string">"/like/123"</span> 
+  <span class="attr">hx-target</span>=<span class="string">"#like-count"</span>
+&gt;
+  Me Gusta
+&lt;/<span class="tag">button</span>&gt;
+
+&lt;<span class="tag">span</span> <span class="attr">id</span>=<span class="string">"like-count"</span>&gt;
+  0 Me Gusta
+&lt;/<span class="tag">span</span>&gt;</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 7: Código Django -->
+<div class="slide-container" id="slide7">
+    <h2 class="slide-title">Ejemplo de Código: El Django</h2>
+    <div class="content-area">
+        <div class="two-column-code">
+            <div>
+                <h3>Tu `views.py`:</h3>
+                <pre class="code-example"><span class="py-keyword">def</span> <span class="py-func">like_post</span>(request, post_id):
+  post = Post.objects.get(id=post_id)
+  post.likes += 1
+  post.save()
+
+  <span class="comment"># ¡Magia! Cero JSON.</span>
+  <span class="comment"># Devolvemos un *pedacito* de HTML directamente.</span>
+  <span class="py-keyword">return</span> render(
+    request, 
+    <span class="string">"partials/like_count.html"</span>, 
+    {"post": post}
+  )
+</pre>
+            </div>
+            <div>
+                <h3>Tu `partials/like_count.html`:</h3>
+                <pre class="code-example"><span class="comment">&lt;!-- Esto es lo ÚNICO que viaja por la red --&gt;</span>
+
+&lt;<span class="tag">span</span> <span class="attr">id</span>=<span class="string">"like-count"</span>&gt;
+  {{ post.likes }} Me Gusta
+&lt;/<span class="tag">span</span>&gt;
+
+<span class="comment">&lt;!-- 
+HTMX recibe esto y reemplaza el 
+contenido del span original, ¡sin recargar!
+--&gt;</span></pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: "Pero sin JS?" -->
+<div class="slide-container" id="slide8">
+    <h2 class="slide-title">"Un Momento... ¿Y el JavaScript?"</h2>
+    <div class="content-area">
+        <div class="bullet-list">
+            <h3 style="font-size: 28px; margin-bottom: 30px;">HTMX: "Menos JavaScript, Más HTML"</h3>
+            <ul>
+                <li><i class="fa-solid fa-bolt"></i> <div><strong>Manejo de Eventos:</strong> ¿Querés que un 'submit' salte con un 'change' o 'keyup'?<br><strong><code>hx-trigger="change"</code></strong> o <strong><code>hx-trigger="keyup delay:500ms"</code></strong></div></li>
+                <li><i class="fa-solid fa-hourglass-half"></i> <div><strong>Polling:</strong> ¿Actualizar un div cada 5 segundos? (¡Genial para notificaciones en vivo!)<br><strong><code>hx-trigger="every 5s"</code></strong></div></li>
+                <li><i class="fa-solid fa-recycle"></i> <div><strong>Validación de Formularios:</strong> Validar campos *antes* de mandar, sin recargar y solo reemplazando el error.<br><strong><code>hx-swap="outerHTML"</code></strong></div></li>
+                <li><i class="fa-solid fa-cogs"></i> <div><strong>Tenés la ventaja:</strong> El 90% de lo que hacías con JS para "manipular el DOM" ahora está en atributos HTML declarativos, ¡súper simple!</div></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: Highlighted_Numbers -->
+<div class="slide-container" id="slide9">
+    <h2 class="slide-title">La Ventaja: Menos Complicaciones</h2>
+    <div class="content-area">
+        <div class="two-column highlight-numbers-layout">
+            <div>
+                <div class="number">1</div>
+                <div class="number-label">Base de Código Única</div>
+            </div>
+            <div>
+                <h3>¡Adiós, API Complicada!</h3>
+                <p>Eliminás el dolor de cabeza de tener una API solo para el frontend. La interfaz y el servidor se comunican en HTML. Esto hace el desarrollo mucho más rápido y el mantenimiento mucho más sencillo.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 10: Styled_Bullet_Points -->
+<div class="slide-container" id="slide10">
+    <h2 class="slide-title">La Ventaja: Productividad Máxima</h2>
+    <div class="content-area">
+        <div class="bullet-list">
+            <ul>
+                <li><i class="fa-solid fa-person-running"></i> <div><strong>Trabajás en un solo lugar:</strong> Te concentrás en tu proyecto Django. Se terminan los cambios de contexto entre repositorios, lenguajes y compilaciones.</div></li>
+                <li><i class="fa-solid fa-book"></i> <div><strong>Aprendés rápido:</strong> Si ya conocés Django y sus templates, ya tenés el 80% hecho. HTMX lo incorporás en una tarde.</div></li>
+                <li><i class="fa-solid fa-rocket"></i> <div><strong>Agilidad:</strong> Sacás productos y características al mercado muchísimo más rápido. Es ideal para MVPs, startups y equipos pequeños.</div></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 11: Styled_Bullet_Points -->
+<div class="slide-container" id="slide11">
+    <h2 class="slide-title">La Ventaja: Rendimiento y SEO</h2>
+    <div class="content-area">
+        <div class="bullet-list">
+            <ul>
+                <li><i class="fa-solid fa-gauge-high"></i> <div><strong>Muy ligero:</strong> Las aplicaciones tienen tiempos de carga inicial mucho menores. El navegador recibe HTML listo, no un JS que *recién después* renderiza.</div></li>
+                <li><i class="fa-solid fa-robot"></i> <div><strong>Amigo del SEO:</strong> El contenido ya viene en el HTML, el cliente no lo tiene que generar. ¡Esto es *fantástico* para que te encuentren!</div></li>
+                <li><i class="fa-solid fa-magnifying-glass"></i> <div><strong>Fácil de indexar:</strong> Los robots de Google entienden todo al instante, sin tener que ejecutar JavaScript complicado.</div></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 12: Rounded_Image_and_Text (Meme) -->
+<div class="slide-container" id="slide12">
+    <h2 class="slide-title">El Desarrollador React te Mira Así...</h2>
+    <div class="content-area">
+        <div class="two-column rounded-image-layout">
+            <div>
+                <div class="image-wrapper">
+                    <img src="https://placehold.co/400x400/10b981/ffffff?text=Meme+Dev+Confundido" alt="Meme de Mr. Krabs confundido">
+                </div>
+            </div>
+            <div>
+                <h3>¿Cero `useEffect`?</h3>
+                <p>...al lograr reactividad, validación de formularios y actualizaciones en tiempo real sin un solo `useEffect`, `useState`, `Redux`, `webpack` ni la dependencia de `node_modules`.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 13: Tiled_Images -->
+<div class="slide-container" id="slide13">
+    <h2 class="slide-title">¿Dónde se Usa Esto? (En Todos Lados)</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="image-tile">
+                <div class="image-wrapper">
+                    <img src="https://placehold.co/300x250/3b82f6/ffffff?text=CRM+Dashboard" alt="Screenshot de un dashboard CRM">
+                </div>
+                <p>Sistemas de gestión interna (CRMs, Dashboards)</p>
+            </div>
+            <div class="image-tile">
+                <div class="image-wrapper">
+                    <img src="https://placehold.co/300x250/3b82f6/ffffff?text=Formulario+Dinamico" alt="Screenshot de un formulario dinámico">
+                </div>
+                <p>Formularios que se mueven (validación en el momento)</p>
+            </div>
+            <div class="image-tile">
+                <div class="image-wrapper">
+                    <img src="https://placehold.co/300x250/3b82f6/ffffff?text=Seccion+Comentarios" alt="Screenshot de una sección de comentarios en vivo">
+                </div>
+                <p>Notificaciones y comentarios (sin recargar la página)</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 14: Tiled_Text_With_Icons -->
+<div class="slide-container" id="slide14">
+    <h2 class="slide-title">¿Te Interesa? Empezá por Acá</h2>
+    <div class="content-area">
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-book-open"></i></div>
+                <h3>htmx.org</h3>
+                <p>La documentación oficial es excelente. Es directa y está llena de ejemplos que podés copiar y pegar.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-brands fa-python"></i></div>
+                <h3>django-htmx</h3>
+                <p>Una librería que facilita aún más la implementación y agrega utilidades para detectar peticiones HTMX en tus vistas de Django.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-baby"></i></div>
+                <h3>Empezá de a poco</h3>
+                <p>No te apures migrando todo. Probá con un dashboard simple, un sistema de 'me gusta' o un formulario. Vas a notar la velocidad al instante.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 15: Comparación de Gráficos -->
+<div class="slide-container" id="slide15">
+    <h2 class="slide-title">A Ver los Números: HTMX vs. React</h2>
+    <div class="content-area comparison-chart-layout">
+        
+        <p class="subtitle" style="align-self: flex-start; margin-bottom: 5px;">*Niveles de complejidad y tiempo (Cuanto menos barra, mejor).</p>
+
+        <div class="chart-legend">
+            <div class="legend-item"><span class="legend-color legend-htmx"></span>HTMX / Django</div>
+            <div class="legend-item"><span class="legend-color legend-react"></span>React / API</div>
+        </div>
+
+        <!-- 1. Tiempos de Compilación (Build Times) -->
+        <div class="chart-item">
+            <h4>Tiempos de Compilación (Build)</h4>
+            <div class="chart-bars">
+                <div class="bar-wrapper">
+                    <div class="bar-label">HTMX</div>
+                    <div class="bar-outer"><div class="bar-inner bar-htmx" style="width: 10%;"></div></div>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar-label">React</div>
+                    <div class="bar-outer"><div class="bar-inner bar-react" style="width: 90%;"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Conexión Backend/Frontend (Integración) -->
+        <div class="chart-item">
+            <h4>Desarrollo de Conexión BE/FE</h4>
+            <div class="chart-bars">
+                <div class="bar-wrapper">
+                    <div class="bar-label">HTMX</div>
+                    <div class="bar-outer"><div class="bar-inner bar-htmx" style="width: 25%;"></div></div>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar-label">React</div>
+                    <div class="bar-outer"><div class="bar-inner bar-react" style="width: 85%;"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Mantención (Long-term) -->
+        <div class="chart-item">
+            <h4>Costo de Mantención</h4>
+            <div class="chart-bars">
+                <div class="bar-wrapper">
+                    <div class="bar-label">HTMX</div>
+                    <div class="bar-outer"><div class="bar-inner bar-htmx" style="width: 40%;"></div></div>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar-label">React</div>
+                    <div class="bar-outer"><div class="bar-inner bar-react" style="width: 70%;"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Curva de Aprendizaje -->
+        <div class="chart-item">
+            <h4>Curva de Aprendizaje (Dev Django)</h4>
+            <div class="chart-bars">
+                <div class="bar-wrapper">
+                    <div class="bar-label">HTMX</div>
+                    <div class="bar-outer"><div class="bar-inner bar-htmx" style="width: 15%;"></div></div>
+                </div>
+                <div class="bar-wrapper">
+                    <div class="bar-label">React</div>
+                    <div class="bar-outer"><div class="bar-inner bar-react" style="width: 75%;"></div></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Slide 16: Quote (Antes Slide 15) -->
+<div class="slide-container" id="slide16">
+    <h2 class="slide-title">La Conclusión</h2>
+    <div class="content-area">
+        <div class="quote-layout">
+            <blockquote>No busca *reemplazar* a las SPAs, pero sí es una opción muy potente y efectiva.</blockquote>
+            <cite>— Una herramienta más en la mochila (¡y mirá qué herramienta!).</cite>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 17: Q&A (Antes Slide 16) -->
+<div class="slide-container" id="slide17">
+    <div class="qa-layout">
+        <h2>¿Preguntas?</h2>
+        <p>¡Gracias por el tiempo!</p>
+        <div class="contact-info">
+            Juan Manuel Schillaci | Devecoop
+        </div>
+    </div>
+</div>
+
+<!-- Última slide vacía para que no se vea la 18 -->
+<div class="slide-container" id="slide18">
+</div>
+
+
+<!-- 
+  * * SCRIPT DE NAVEGACIÓN (Sin cambios)
+  * -->
+<script>
+  // Espera a que todo el contenido HTML esté cargado
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    // Selecciona todos los contenedores de diapositivas y los botones
+    const slides = document.querySelectorAll('.slide-container');
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
+    
+    // La diapositiva 18 es un truco para que la 17 (Q&A) no sea la última
+    // La verdadera "última" diapositiva es la 17 (índice 16)
+    const totalSlides = slides.length - 1; // Ignoramos la última diapositiva vacía
+    let currentSlide = 0; // Empezamos en la primera diapositiva (índice 0)
+
+    // Función para mostrar una diapositiva específica
+    function showSlide(index) {
+      // Ocultar todas las diapositivas
+      slides.forEach((slide) => {
+        slide.classList.remove('active-slide');
+      });
+
+      // Mostrar solo la diapositiva en el índice 'index'
+      if (slides[index]) {
+        slides[index].classList.add('active-slide');
+      }
+
+      // Actualizar la visibilidad de los botones
+      // Ocultar botón 'prev' si estamos en la primera diapositiva
+      prevButton.style.display = (index === 0) ? 'none' : 'block';
+      
+      // Ocultar botón 'next' si estamos en la última diapositiva real (Q&A)
+      nextButton.style.display = (index === totalSlides - 1) ? 'none' : 'block';
+    }
+
+    // Event listener para el botón 'siguiente'
+    nextButton.addEventListener('click', () => {
+      if (currentSlide < totalSlides - 1) { // -1 porque totalSlides es 18, pero el índice es 17
+        currentSlide++;
+        showSlide(currentSlide);
+      }
+    });
+
+    // Event listener para el botón 'anterior'
+    prevButton.addEventListener('click', () => {
+      if (currentSlide > 0) {
+        currentSlide--;
+        showSlide(currentSlide);
+      }
+    });
+
+    // Añadir navegación por teclado (flechas izquierda y derecha)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            nextButton.click(); // Simula un clic en 'siguiente'
+        } else if (e.key === 'ArrowLeft') {
+            prevButton.click(); // Simula un clic en 'anterior'
+        }
+    });
+
+    // Mostrar la primera diapositiva al cargar la página
+    showSlide(0);
+  });
+</script>
+
+</body>
+</html>
