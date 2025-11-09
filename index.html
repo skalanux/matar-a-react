@@ -3,637 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Innovando con HTMX y Django (Presentación Adaptada)</title>
+    <title>Matar a React</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Lato:wght@400;700&family=Consolas:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-
-/* 1. CONFIGURACIÓN GENERAL */
-* {
-  box-sizing: border-box;
-}
-
-/* * MODIFICACIÓN CLAVE PARA LA NAVEGACIÓN:
- * El body ahora centrará la única diapositiva activa.
- * El fondo gris se mantiene.
-*/
-body {
-  background-color: #f0f2f5;
-  display: flex; /* Cambiado de grid a flex */
-  justify-content: center; /* Centrar horizontalmente */
-  align-items: center; /* Centrar verticalmente */
-  margin: 0;
-  min-height: 100vh; /* Asegurar altura completa */
-  padding: 20px 0; /* Mantener el padding original */
-  position: relative; /* Para posicionar las flechas */
-  font-family: 'Lato', sans-serif;
-}
-
-/* * MODIFICACIÓN CLAVE PARA LA NAVEGACIÓN:
- * Ocultar todas las diapositivas por defecto.
-*/
-.slide-container {
-  display: none; /* Oculto por defecto */
-  align-items: center;
-  background-color: #1a1a1a;
-  border-radius: 8px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  flex-direction: column;
-  height: 720px;
-  justify-content: center;
-  overflow: hidden;
-  padding: 60px;
-  position: relative; /* Cambiado de absolute a relative */
-  width: 1280px;
-  flex-shrink: 0; /* Evitar que se encoja */
-}
-
-/* * NUEVA CLASE:
- * La clase 'active-slide' usará 'display: flex' para mostrar la diapositiva actual.
-*/
-.slide-container.active-slide {
-  display: flex;
-}
-
-/* Decoración sutil de fondo */
-.slide-container::before {
-  content: '';
-  position: absolute;
-  top: -50px;
-  right: -50px;
-  width: 200px;
-  height: 200px;
-  background-color: #10b981; /* Color acento */
-  opacity: 0.1;
-  border-radius: 50%;
-  filter: blur(50px);
-  z-index: 0;
-}
-.slide-container::after {
-  content: '';
-  position: absolute;
-  bottom: -50px;
-  left: -50px;
-  width: 250px;
-  height: 250px;
-  background-color: #3b82f6; /* Color acento secundario */
-  opacity: 0.1;
-  border-radius: 50%;
-  filter: blur(60px);
-  z-index: 0;
-}
-
-
-.slide-container>* {
-  position: relative;
-  z-index: 1;
-}
-
-/* 2. TIPOGRAFÍA (Sin cambios) */
-
-.slide-container h1,
-.slide-container h2,
-.slide-container h3 {
-  color: #f0f0f0;
-  font-weight: 700;
-  font-family: 'Poppins', sans-serif;
-  margin: 0;
-}
-
-.slide-container p,
-.slide-container li,
-.slide-container .subtitle,
-.slide-container .number-label,
-.slide-container .legend li,
-.slide-container .chart-summary,
-.slide-container .bar .label,
-.slide-container th,
-.slide-container td,
-.slide-container .alternating-text-tile p,
-.slide-container .bleed-text-side p,
-.slide-container cite {
-  color: #cccccc;
-  font-family: 'Lato', sans-serif;
-}
-
-.slide-container h1 {
-  font-size: 80px;
-  line-height: 1.1;
-}
-
-.slide-container .slide-title {
-  font-size: 48px;
-  font-weight: 700;
-  margin-bottom: 40px;
-  text-align: left;
-  width: 100%;
-  color: #10b981;
-}
-
-.slide-container h3 {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 15px;
-  color: #f0f0f0;
-}
-
-.slide-container p,
-.slide-container li,
-.slide-container .subtitle,
-.slide-container .legend li,
-.slide-container .chart-summary,
-.slide-container .bar .label,
-.slide-container th,
-.slide-container td,
-.slide-container .alternating-text-tile p,
-.slide-container .bleed-text-side p {
-  font-size: 20px;
-  line-height: 1.6;
-}
-
-.slide-container .subtitle {
-  font-size: 24px;
-  font-weight: 400;
-  margin: 20px auto;
-  color: #cccccc;
-}
-
-.slide-container .content-area {
-  align-items: center;
-  display: flex;
-  flex-grow: 1;
-  justify-content: center;
-  width: 100%;
-}
-
-/* 3. LAYOUTS (Sin cambios) */
-
-/* Title_Slide */
-.title-layout {
-  text-align: center;
-}
-
-/* Section_Title */
-.section-title-layout {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: center;
-  text-align: center;
-  width: 100%;
-}
-.section-title-layout h2 {
-  font-size: 72px;
-  margin-bottom: 20px;
-  color: #f0f0f0;
-}
-.section-title-layout .subtitle {
-  font-size: 28px;
-  margin: 0 auto;
-  max-width: 800px;
-}
-.section-title-layout hr {
-  background-color: #10b981;
-  border: none;
-  height: 5px;
-  margin: 30px auto;
-  width: 100px;
-}
-
-/* Two_Column (Base) */
-.two-column {
-  align-items: flex-start;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 50px;
-  width: 100%;
-}
-.two-column ul {
-  list-style: none;
-  margin: 0;
-  padding-left: 0;
-}
-.two-column li {
-  margin-bottom: 15px;
-  position: relative;
-  padding-left: 30px;
-}
-.two-column li::before {
-  content: '✓';
-  color: #10b981;
-  font-size: 20px;
-  font-weight: 700;
-  position: absolute;
-  left: 0;
-  top: 5px;
-}
-
-/* Rounded_Image_and_Text */
-.rounded-image-layout .image-wrapper {
-  border-radius: 50%;
-  flex-shrink: 0;
-  height: 400px;
-  width: 400px;
-  margin: 0 auto;
-  overflow: hidden;
-  border: 4px solid #10b981;
-}
-.rounded-image-layout .image-wrapper img {
-  height: 100%;
-  object-fit: cover;
-  width: 100%;
-}
-.rounded-image-layout.two-column {
-  align-items: center;
-}
-.rounded-image-layout h3 {
-    font-size: 36px;
-    color: #10b981;
-    margin-bottom: 20px;
-}
-
-/* Image_Right_Text_Left */
-.image-right-layout .image-wrapper {
-  border-radius: 12px;
-  height: 400px;
-  overflow: hidden;
-  width: 100%;
-  border: 2px solid #333;
-}
-.image-right-layout .image-wrapper img {
-  height: 100%;
-  object-fit: contain;
-  width: 100%;
-  background-color: #2a2a2a;
-}
-.image-right-layout.two-column {
-  align-items: center;
-}
-
-/* Tiled_Text_With_Icons */
-.tiled-content {
-  align-items: stretch;
-  display: flex;
-  gap: 30px;
-  justify-content: center;
-  width: 100%;
-}
-.tile {
-  align-items: center;
-  background-color: #2a2a2a;
-  border-radius: 12px;
-  border: 1px solid #444;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  justify-content: flex-start;
-  padding: 30px;
-  text-align: center;
-}
-.tile .icon {
-  color: #10b981;
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-.tile h3 {
-    color: #10b981;
-    font-size: 24px;
-}
-.tile p {
-    font-size: 16px;
-    color: #cccccc;
-}
-
-/* Tiled_Text_With_Icons (4 tiles) */
-.four-tiles .tiled-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 25px;
-}
-.four-tiles .tile {
-    flex-direction: row;
-    text-align: left;
-    align-items: flex-start;
-    padding: 25px;
-}
-.four-tiles .tile .icon {
-    font-size: 36px;
-    margin-right: 20px;
-    margin-bottom: 0;
-}
-.four-tiles .tile-content-wrapper {
-    display: flex;
-    flex-direction: column;
-}
-.four-tiles .tile h3 {
-    font-size: 22px;
-    margin-bottom: 10px;
-}
-
-/* Highlighted_Numbers */
-.highlight-numbers-layout>div:first-child {
-  flex: 0 0 40%;
-  text-align: center;
-}
-.highlight-numbers-layout .number {
-  color: #10b981;
-  font-size: 160px;
-  font-weight: 700;
-  font-family: 'Poppins', sans-serif;
-  line-height: 1;
-}
-.highlight-numbers-layout .number-label {
-  font-size: 28px;
-  font-weight: 700;
-  color: #f0f0f0;
-}
-.highlight-numbers-layout.two-column {
-    align-items: center;
-}
-
-/* Styled_Bullet_Points */
-.bullet-list {
-  max-width: 900px;
-  width: 100%;
-}
-.bullet-list ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.bullet-list li {
-  align-items: flex-start;
-  display: flex;
-  gap: 20px;
-  margin-bottom: 25px;
-}
-.bullet-list i {
-  color: #10b981;
-  font-size: 28px;
-  margin-top: 5px;
-  text-align: center;
-  flex-shrink: 0;
-  width: 30px;
-}
-.bullet-list li strong {
-  color: #f0f0f0;
-  font-weight: 700;
-}
-
-/* Tiled_Images */
-.image-tile {
-  flex: 1;
-  text-align: center;
-}
-.image-tile .image-wrapper {
-  height: 250px;
-  margin-bottom: 20px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 2px solid #333;
-}
-.image-tile .image-wrapper img {
-    height: 100%;
-    object-fit: cover;
-    width: 100%;
-}
-.image-tile p {
-    font-size: 18px;
-    color: #cccccc;
-}
-
-/* Quote */
-.quote-layout {
-  text-align: center;
-  width: 80%;
-}
-.quote-layout blockquote {
-  color: #f0f0f0;
-  font-size: 48px;
-  font-weight: 400;
-  font-family: 'Poppins', sans-serif;
-  line-height: 1.4;
-  margin: 0 0 30px 0;
-  padding: 0 40px;
-  position: relative;
-}
-.quote-layout blockquote::before,
-.quote-layout blockquote::after {
-  color: #10b981;
-  content: '"';
-  font-size: 100px;
-  line-height: 0;
-  position: absolute;
-  opacity: 0.5;
-}
-.quote-layout blockquote::before {
-  left: -10px;
-  top: 30px;
-}
-.quote-layout blockquote::after {
-  bottom: 10px;
-  right: -10px;
-}
-.quote-layout cite {
-  color: #cccccc;
-  font-size: 22px;
-  font-style: normal;
-  font-family: 'Lato', sans-serif;
-}
-
-/* Q&A */
-.qa-layout {
-  text-align: center;
-  width: 100%;
-  align-self: center;
-}
-.qa-layout h2 {
-  font-size: 90px;
-  margin-bottom: 20px;
-  color: #10b981;
-}
-.qa-layout p {
-  font-size: 28px;
-  color: #f0f0f0;
-}
-.qa-layout .contact-info {
-  color: #cccccc;
-  font-size: 22px;
-  margin-top: 40px;
-}
-
-/* --- ESTILOS PARA CÓDIGO (Sin cambios) --- */
-pre.code-example {
-    background-color: #2a2a2a;
-    border-radius: 8px;
-    padding: 20px;
-    border: 1px solid #444;
-    color: #e0e0e0;
-    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    font-size: 17px;
-    white-space: pre-wrap;
-    line-height: 1.5;
-    height: 100%;
-}
-pre.code-example .comment {
-    color: #999;
-    font-style: italic;
-}
-pre.code-example .tag {
-    color: #3b82f6; /* Azul */
-}
-pre.code-example .attr {
-    color: #10b981; /* Verde acento */
-}
-pre.code-example .string {
-    color: #f59e0b; /* Naranja */
-}
-pre.code-example .py-keyword {
-    color: #e879f9; /* Rosa/Violeta */
-}
-pre.code-example .py-func {
-    color: #10b981; /* Verde */
-}
-
-.two-column-code {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  width: 100%;
-  align-items: stretch;
-}
-.two-column-code h3 {
-    font-size: 24px;
-    color: #10b981;
-    margin-bottom: 10px;
-}
-
-/* * * ESTILOS PARA EL GRÁFICO COMPARATIVO * * */
-.comparison-chart-layout {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    align-items: flex-start;
-    padding-top: 20px;
-}
-.chart-item {
-    width: 100%;
-    margin-bottom: 20px;
-}
-.chart-item h4 {
-    color: #f0f0f0;
-    font-size: 24px;
-    margin-bottom: 10px;
-    font-family: 'Poppins', sans-serif;
-    text-transform: uppercase;
-}
-.chart-bars {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-}
-.bar-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-.bar-label {
-    color: #999;
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-.bar-outer {
-    height: 15px;
-    background-color: #333;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
-}
-.bar-inner {
-    height: 100%;
-    border-radius: 5px;
-    transition: width 0.5s ease-out;
-}
-/* HTMX is Green (Low Complexity = Bueno) */
-.bar-htmx {
-    background: linear-gradient(90deg, #10b981, #059669);
-}
-/* React is Blue (High Complexity = Más Laburo) */
-.bar-react {
-    background: linear-gradient(90deg, #3b82f6, #2563eb);
-}
-/* Legend */
-.chart-legend {
-    display: flex;
-    gap: 50px;
-    margin-top: 20px;
-    font-size: 20px;
-    align-self: center;
-}
-.legend-item {
-    display: flex;
-    align-items: center;
-    color: #f0f0f0;
-}
-.legend-color {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    margin-right: 10px;
-}
-.legend-htmx {
-    background-color: #10b981;
-}
-.legend-react {
-    background-color: #3b82f6;
-}
-/* * * FIN ESTILOS PARA EL GRÁFICO COMPARATIVO * * */
-
-/* * * NUEVOS ESTILOS PARA NAVEGACIÓN
- * */
-
-.nav-arrow {
-  position: fixed; /* Se quedan fijos en la pantalla */
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #f0f0f0;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 20px;
-  cursor: pointer;
-  z-index: 1000; /* Asegurar que estén por encima de todo */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.2s;
-}
-
-.nav-arrow:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-#prev-button {
-  left: 30px; /* Espacio desde la izquierda */
-}
-
-#next-button {
-  right: 30px; /* Espacio desde la derecha */
-}
-
-    </style>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 
-<!-- 
-  * * BOTONES DE NAVEGACIÓN (Sin cambios)
-  * -->
+<!-- BOTONES DE NAVEGACIÓN -->
 <button id="prev-button" class="nav-arrow" aria-label="Diapositiva anterior">
     <i class="fa-solid fa-chevron-left"></i>
 </button>
@@ -642,38 +21,206 @@ pre.code-example .py-func {
 </button>
 
 
-<!-- 
-  * * CONTENEDOR DE DIAPOSITIVAS (Contenido Adaptado al Rioplatense)
-  * -->
+<!-- CONTENEDOR DE DIAPOSITIVAS -->
 
-<!-- Slide 1: Title_Slide -->
+<!-- Slide 1: Title_Slide (CON LOGO) -->
 <div class="slide-container" id="slide1">
     <div class="title-layout">
-        <h1>Innovando con HTMX y Django</h1>
-        <p class="subtitle">Redescubriendo la Web (Menos Complicaciones, Más Agilidad)</p>
+        
+        <!-- INSTRUCCIÓN: Reemplazá el 'src' de abajo por la ruta a tu logo. Ej: src="./mi_logo.png" -->
+        <img src="logo-puntocoop.png" 
+             alt="Logo Punto.coop.ar" 
+             style="max-height: 90px; height: auto; width: auto; max-width: 300px; margin-bottom: 30px; border: none; background: none;">
+
+        <h1>Matar a React</h1>
+        <p class="subtitle">Voz en off y contar la historia de la rama de coopapp</p>
     </div>
 </div>
 
-<!-- Slide 2: Rounded_Image_and_Text (Meme) -->
-<div class="slide-container" id="slide2">
-    <h2 class="slide-title">La Complicación: El Dolor de Cabeza Actual</h2>
+<!-- Slide 1: Title_Slide (CON LOGO) -->
+<div class="slide-container" id="slide1">
+    <div class="title-layout">
+        
+        <!-- INSTRUCCIÓN: Reemplazá el 'src' de abajo por la ruta a tu logo. Ej: src="./mi_logo.png" -->
+        <img src="logo-puntocoop.png" 
+             alt="Logo Punto.coop.ar" 
+             style="max-height: 90px; height: auto; width: auto; max-width: 300px; margin-bottom: 30px; border: none; background: none;">
+
+        <h1>Matar a React</h1>
+        <p class="subtitle">Cualquier semejanza con los hechos reales es pura coincidencia</p>
+    </div>
+</div>
+
+<!-- *** INICIO DE LA SECUENCIA DE "BOLA DE NIEVE" *** -->
+<!-- Slide 9: El Monstruo (Resumen) -->
+<div class="slide-container" id="slide9">
     <div class="content-area">
         <div class="two-column rounded-image-layout">
             <div>
                 <div class="image-wrapper">
-                    <img src="https://placehold.co/400x400/10b981/ffffff?text=Meme+Todo+piola+con+node_modules+prendido+fuego" alt="Meme 'Todo piola' con 'node_modules' prendido fuego">
+                    <img src="./idea.png" alt="Meme de un diagrama de arquitectura increíblemente complejo">
                 </div>
             </div>
             <div>
-                <h3>¿Te pasó?</h3>
-                <p>Hacés `git pull`, actualizás dependencias... y de repente, todo se rompe. El frontend y el backend tienen problemas de comunicación, y el equipo pasa mucho tiempo intentando resolver la complejidad entre ellos.</p>
+                <h3>Juancito tenia problemas para dormir y se le ocurrió una idea</h3>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Slide 3: Image_Right_Text_Left (Meme) -->
-<div class="slide-container" id="slide3">
+<!-- Slide 9: El Monstruo (Resumen) -->
+<div class="slide-container" id="slide9">
+    <div class="content-area">
+        <div class="two-column rounded-image-layout">
+            <div>
+                <div class="image-wrapper">
+                    <img src="./ovejas.png" alt="Meme de un diagrama de arquitectura increíblemente complejo">
+                </div>
+            </div>
+            <div>
+                <h3>Una app para contar ovejas</h3>
+                <p>Bueno... Juancito era medio bolu.., eh..era programador  Juancito.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: El Monstruo (Resumen) -->
+<div class="slide-container" id="slide9">
+    <div class="content-area">
+        <div class="two-column rounded-image-layout">
+            <div>
+                <div class="image-wrapper">
+                    <img src="./entusiasmo_10.png" alt="Meme de un diagrama de arquitectura increíblemente complejo">
+                </div>
+            </div>
+            <div>
+                <h3>Vamos a empezar con el backendcito, algo simple...en nodejs</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: El Monstruo (Resumen) -->
+<div class="slide-container" id="slide9">
+    <div class="content-area">
+        <div class="two-column rounded-image-layout">
+            <div>
+                <div class="image-wrapper">
+                    <img src="./entusiasmo_8.png" alt="Meme de un diagrama de arquitectura increíblemente complejo">
+                </div>
+            </div>
+            <div>
+                <h3>Armemos un front sencillito...Vue..Angular..mmm ...Usemos React!</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: El Monstruo (Resumen) -->
+<div class="slide-container" id="slide9">
+    <div class="content-area">
+        <div class="two-column rounded-image-layout">
+            <div>
+                <div class="image-wrapper">
+                    <img src="./entusiasmo_6.png" alt="Meme de un diagrama de arquitectura increíblemente complejo">
+                </div>
+            </div>
+            <div>
+        <h3>"Mmm... necesitamos comunicarnos con el backend. Hagamos una API REST."</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 9: El Monstruo (Resumen) -->
+<div class="slide-container" id="slide9">
+    <div class="content-area">
+        <div class="two-column rounded-image-layout">
+            <div>
+                <div class="image-wrapper">
+                    <img src="./frustracion_2.png" alt="Meme de un diagrama de arquitectura increíblemente complejo">
+                </div>
+            </div>
+            <div>
+        <h3>"Bueno, a ver... necesitamos 'buildear' esto. Pongamos Webpack."</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Slide 9: El Monstruo (Resumen) -->
+<div class="slide-container" id="slide9">
+    <div class="content-area">
+        <div class="two-column rounded-image-layout">
+            <div>
+                <div class="image-wrapper">
+                    <img src="./ayudame-loco.jpg" alt="Meme de un diagrama de arquitectura increíblemente complejo">
+                </div>
+            </div>
+            <div>
+            <h3>"La API vuela va de diez...pero esto no es muy seguro, vamos a ponerle JWT"</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Slide 9: El Monstruo (Resumen) -->
+<div class="slide-container" id="slide9">
+    <div class="content-area">
+        <div class="two-column rounded-image-layout">
+            <div>
+                <div class="image-wrapper">
+                    <img src="./casnsado_pausa.png" alt="Meme de un diagrama de arquitectura increíblemente complejo">
+                </div>
+            </div>
+            <div>
+            <h3>"Bueno, creo que ya quedó bien, sigamos en un par de semanas, necesito dormir."</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 8: La Pausa -->
+<div class="slide-container" id="slide8">
+    <div class="section-title-layout">
+        <div class="icon"><i class="fa-solid fa-clock"></i></div>
+        <h2>4 semanas después...</h2>
+    </div>
+</div>
+
+<!-- Slide 8: La Pausa -->
+<div class="slide-container" id="slide8">
+    <div class="section-title-layout">
+        <div class="icon"><i class="fa-solid fa-wrench"></i></div>
+        <h2>Juancito retoma el proyecto, abre la consola y hace update de las librerías...</h2>
+    </div>
+</div>
+
+
+<!-- Slide 9: El Monstruo (Resumen) -->
+<div class="slide-container" id="slide9">
+    <div class="content-area">
+        <div class="two-column rounded-image-layout">
+            <div>
+                <div class="image-wrapper">
+                    <img src="./harold.jpg" alt="Meme de un diagrama de arquitectura increíblemente complejo">
+                </div>
+            </div>
+            <div>
+            <h3>"El framework no existe más."</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- *** FIN DE LA SECUENCIA DE "BOLA DE NIEVE" *** -->
+
+
+<!-- Slide 11: Image_Right_Text_Left (Meme) -->
+<div class="slide-container" id="slide11">
     <h2 class="slide-title">Lo Complicado de las SPAs</h2>
     <div class="content-area">
         <div class="two-column image-right-layout">
@@ -697,8 +244,8 @@ pre.code-example .py-func {
     </div>
 </div>
 
-<!-- Slide 4: Section_Title -->
-<div class="slide-container" id="slide4">
+<!-- Slide 12: Section_Title -->
+<div class="slide-container" id="slide12">
     <div class="section-title-layout">
         <hr>
         <h2>La Alianza Ideal</h2>
@@ -706,8 +253,8 @@ pre.code-example .py-func {
     </div>
 </div>
 
-<!-- Slide 5: Tiled_Text_With_Icons (4 tiles) -->
-<div class="slide-container" id="slide5">
+<!-- Slide 13: Tiled_Text_With_Icons (4 tiles) -->
+<div class="slide-container" id="slide13">
     <h2 class="slide-title">¿Cómo Funciona Esta Propuesta?</h2>
     <div class="content-area four-tiles">
         <div class="tiled-content">
@@ -743,8 +290,8 @@ pre.code-example .py-func {
     </div>
 </div>
 
-<!-- Slide 6: Código HTML -->
-<div class="slide-container" id="slide6">
+<!-- Slide 14: Código HTML -->
+<div class="slide-container" id="slide14">
     <h2 class="slide-title">Ejemplo de Código: El HTML</h2>
     <div class="content-area">
         <div class="two-column-code">
@@ -772,8 +319,8 @@ pre.code-example .py-func {
     </div>
 </div>
 
-<!-- Slide 7: Código Django -->
-<div class="slide-container" id="slide7">
+<!-- Slide 15: Código Django -->
+<div class="slide-container" id="slide15">
     <h2 class="slide-title">Ejemplo de Código: El Django</h2>
     <div class="content-area">
         <div class="two-column-code">
@@ -810,8 +357,8 @@ contenido del span original, ¡sin recargar!
     </div>
 </div>
 
-<!-- Slide 8: "Pero sin JS?" -->
-<div class="slide-container" id="slide8">
+<!-- Slide 16: "Pero sin JS?" -->
+<div class="slide-container" id="slide16">
     <h2 class="slide-title">"Un Momento... ¿Y el JavaScript?"</h2>
     <div class="content-area">
         <div class="bullet-list">
@@ -826,8 +373,8 @@ contenido del span original, ¡sin recargar!
     </div>
 </div>
 
-<!-- Slide 9: Highlighted_Numbers -->
-<div class="slide-container" id="slide9">
+<!-- Slide 17: Highlighted_Numbers -->
+<div class="slide-container" id="slide17">
     <h2 class="slide-title">La Ventaja: Menos Complicaciones</h2>
     <div class="content-area">
         <div class="two-column highlight-numbers-layout">
@@ -843,8 +390,8 @@ contenido del span original, ¡sin recargar!
     </div>
 </div>
 
-<!-- Slide 10: Styled_Bullet_Points -->
-<div class="slide-container" id="slide10">
+<!-- Slide 18: Styled_Bullet_Points -->
+<div class="slide-container" id="slide18">
     <h2 class="slide-title">La Ventaja: Productividad Máxima</h2>
     <div class="content-area">
         <div class="bullet-list">
@@ -857,8 +404,8 @@ contenido del span original, ¡sin recargar!
     </div>
 </div>
 
-<!-- Slide 11: Styled_Bullet_Points -->
-<div class="slide-container" id="slide11">
+<!-- Slide 19: Styled_Bullet_Points -->
+<div class="slide-container" id="slide19">
     <h2 class="slide-title">La Ventaja: Rendimiento y SEO</h2>
     <div class="content-area">
         <div class="bullet-list">
@@ -871,8 +418,8 @@ contenido del span original, ¡sin recargar!
     </div>
 </div>
 
-<!-- Slide 12: Rounded_Image_and_Text (Meme) -->
-<div class="slide-container" id="slide12">
+<!-- Slide 20: Rounded_Image_and_Text (Meme) -->
+<div class="slide-container" id="slide20">
     <h2 class="slide-title">El Desarrollador React te Mira Así...</h2>
     <div class="content-area">
         <div class="two-column rounded-image-layout">
@@ -889,8 +436,8 @@ contenido del span original, ¡sin recargar!
     </div>
 </div>
 
-<!-- Slide 13: Tiled_Images -->
-<div class="slide-container" id="slide13">
+<!-- Slide 21: Tiled_Images -->
+<div class="slide-container" id="slide21">
     <h2 class="slide-title">¿Dónde se Usa Esto? (En Todos Lados)</h2>
     <div class="content-area">
         <div class="tiled-content">
@@ -916,8 +463,8 @@ contenido del span original, ¡sin recargar!
     </div>
 </div>
 
-<!-- Slide 14: Tiled_Text_With_Icons -->
-<div class="slide-container" id="slide14">
+<!-- Slide 22: Tiled_Text_With_Icons -->
+<div class="slide-container" id="slide22">
     <h2 class="slide-title">¿Te Interesa? Empezá por Acá</h2>
     <div class="content-area">
         <div class="tiled-content">
@@ -940,8 +487,8 @@ contenido del span original, ¡sin recargar!
     </div>
 </div>
 
-<!-- Slide 15: Comparación de Gráficos -->
-<div class="slide-container" id="slide15">
+<!-- Slide 23: Comparación de Gráficos -->
+<div class="slide-container" id="slide23">
     <h2 class="slide-title">A Ver los Números: HTMX vs. React</h2>
     <div class="content-area comparison-chart-layout">
         
@@ -988,7 +535,7 @@ contenido del span original, ¡sin recargar!
             <div class="chart-bars">
                 <div class="bar-wrapper">
                     <div class="bar-label">HTMX</div>
-                    <div class="bar-outer"><div class="bar-inner bar-htmx" style="width: 40%;"></div></div>
+                    <div class"bar-outer"><div class="bar-inner bar-htmx" style="width: 40%;"></div></div>
                 </div>
                 <div class="bar-wrapper">
                     <div class="bar-label">React</div>
@@ -1015,8 +562,8 @@ contenido del span original, ¡sin recargar!
     </div>
 </div>
 
-<!-- Slide 16: Quote (Antes Slide 15) -->
-<div class="slide-container" id="slide16">
+<!-- Slide 24: Quote -->
+<div class="slide-container" id="slide24">
     <h2 class="slide-title">La Conclusión</h2>
     <div class="content-area">
         <div class="quote-layout">
@@ -1026,68 +573,70 @@ contenido del span original, ¡sin recargar!
     </div>
 </div>
 
-<!-- Slide 17: Q&A (Antes Slide 16) -->
-<div class="slide-container" id="slide17">
+<!-- Slide 25: Q&A -->
+<div class="slide-container" id="slide25">
     <div class="qa-layout">
         <h2>¿Preguntas?</h2>
-        <p>¡Gracias por el tiempo!</p>
+    </div>
+</div>
+
+<!-- Slide 25: Q&A -->
+<div class="slide-container" id="slide25">
+    <div class="qa-layout">
+        <h2>¡Gracias por el tiempo!</h2>
+                    <img src="qr-charla.png" alt="Screenshot de una sección de comentarios en vivo">
         <div class="contact-info">
+            <a href="https://github.com/skalanux" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> https://github.com/skalanux</a>
+          <br>
+            <a href="https://www.linkedin.com/in/jmschillaci/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> https://www.linkedin.com/in/jmschillaci/</a>
+          <br>
+            juan.schillaci@devecoop.com - 
             Juan Manuel Schillaci | Devecoop
         </div>
     </div>
 </div>
 
-<!-- Última slide vacía para que no se vea la 18 -->
-<div class="slide-container" id="slide18">
+<!-- Última slide vacía -->
+<div class="slide-container" id="slide26">
 </div>
 
 
-<!-- 
-  * * SCRIPT DE NAVEGACIÓN (Sin cambios)
-  * -->
+<!-- SCRIPT DE NAVEGACIÓN (Sin cambios) -->
 <script>
-  // Espera a que todo el contenido HTML esté cargado
   document.addEventListener('DOMContentLoaded', () => {
     
-    // Selecciona todos los contenedores de diapositivas y los botones
     const slides = document.querySelectorAll('.slide-container');
     const prevButton = document.getElementById('prev-button');
     const nextButton = document.getElementById('next-button');
     
-    // La diapositiva 18 es un truco para que la 17 (Q&A) no sea la última
-    // La verdadera "última" diapositiva es la 17 (índice 16)
-    const totalSlides = slides.length - 1; // Ignoramos la última diapositiva vacía
-    let currentSlide = 0; // Empezamos en la primera diapositiva (índice 0)
+    // totalSlides ahora es 26, pero la última (índice 25) es la vacía.
+    // La última *real* es la 25 (índice 24), la de Q&A.
+    const totalSlides = slides.length - 1; 
+    let currentSlide = 0; 
 
-    // Función para mostrar una diapositiva específica
     function showSlide(index) {
-      // Ocultar todas las diapositivas
       slides.forEach((slide) => {
         slide.classList.remove('active-slide');
       });
 
-      // Mostrar solo la diapositiva en el índice 'index'
       if (slides[index]) {
         slides[index].classList.add('active-slide');
       }
 
-      // Actualizar la visibilidad de los botones
-      // Ocultar botón 'prev' si estamos en la primera diapositiva
+      // Ocultar 'prev' en la primera (índice 0)
       prevButton.style.display = (index === 0) ? 'none' : 'block';
       
-      // Ocultar botón 'next' si estamos en la última diapositiva real (Q&A)
+      // Ocultar 'next' en la última real (índice 24)
       nextButton.style.display = (index === totalSlides - 1) ? 'none' : 'block';
     }
 
-    // Event listener para el botón 'siguiente'
     nextButton.addEventListener('click', () => {
-      if (currentSlide < totalSlides - 1) { // -1 porque totalSlides es 18, pero el índice es 17
+      if (currentSlide < totalSlides - 1) { 
         currentSlide++;
         showSlide(currentSlide);
       }
     });
 
-    // Event listener para el botón 'anterior'
     prevButton.addEventListener('click', () => {
       if (currentSlide > 0) {
         currentSlide--;
@@ -1095,16 +644,15 @@ contenido del span original, ¡sin recargar!
       }
     });
 
-    // Añadir navegación por teclado (flechas izquierda y derecha)
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight') {
-            nextButton.click(); // Simula un clic en 'siguiente'
+            nextButton.click(); 
         } else if (e.key === 'ArrowLeft') {
-            prevButton.click(); // Simula un clic en 'anterior'
+            prevButton.click(); 
         }
     });
 
-    // Mostrar la primera diapositiva al cargar la página
+    // Mostrar la primera diapositiva (índice 0)
     showSlide(0);
   });
 </script>
