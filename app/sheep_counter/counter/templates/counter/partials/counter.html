@@ -1,0 +1,7 @@
+{% load static %}
+<div class="count-display">{{ count }}</div>
+<div class="sheep-container" id="sheep-container" hx-swap-oob="true">
+    {% for pos in sheep_positions %}
+        <img src="{% static 'oveja.png' %}" alt="Oveja" class="sheep" style="top: {{ pos.0 }}%; left: {{ pos.1 }}%;">
+    {% endfor %}
+</div>
