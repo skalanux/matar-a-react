@@ -33,7 +33,7 @@
              style="max-height: 90px; height: auto; width: auto; max-width: 300px; margin-bottom: 30px; border: none; background: none;">
 
         <h1>Matar a React</h1>
-        <p class="subtitle">Voz en off y contar la historia de la rama de coopapp</p>
+        <p class="subtitle">Presentaciones...apertura...Voz en off y contar la historia de la rama de coopapp</p>
     </div>
 </div>
 
@@ -326,26 +326,26 @@
         <div class="two-column-code">
             <div>
                 <h3>Tu `views.py`:</h3>
-                <pre class="code-example"><span class="py-keyword">def</span> <span class="py-func">like_post</span>(request, post_id):
-  post = Post.objects.get(id=post_id)
-  post.likes += 1
-  post.save()
+                <pre class="code-example"><span class="py-keyword">def</span> <span class="py-func">ovejas_post</span>(request, rebanio_id):
+              rebanio = Rebanio.objects.get(id=rebanio_id)
+              rebanio.ovejas += 1
+              rebanio.save()
 
   <span class="comment"># ¡Magia! Cero JSON.</span>
   <span class="comment"># Devolvemos un *pedacito* de HTML directamente.</span>
   <span class="py-keyword">return</span> render(
     request, 
-    <span class="string">"partials/like_count.html"</span>, 
-    {"post": post}
+    <span class="string">"partials/ovejas_count.html"</span>, 
+    {"ovejas": cant_ovejas}
   )
 </pre>
             </div>
             <div>
-                <h3>Tu `partials/like_count.html`:</h3>
+                <h3>Tu `partials/ovejas_count.html`:</h3>
                 <pre class="code-example"><span class="comment">&lt;!-- Esto es lo ÚNICO que viaja por la red --&gt;</span>
 
-&lt;<span class="tag">span</span> <span class="attr">id</span>=<span class="string">"like-count"</span>&gt;
-  {{ post.likes }} Me Gusta
+&lt;<span class="tag">span</span> <span class="attr">id</span>=<span class="string">"Contador ovejas"</span>&gt;
+  {{ ovejas }} Ovejas
 &lt;/<span class="tag">span</span>&gt;
 
 <span class="comment">&lt;!-- 
@@ -418,23 +418,17 @@ contenido del span original, ¡sin recargar!
     </div>
 </div>
 
-<!-- Slide 20: Rounded_Image_and_Text (Meme) -->
-<div class="slide-container" id="slide20">
-    <h2 class="slide-title">El Desarrollador React te Mira Así...</h2>
+<!-- Slide 9: El Monstruo (Resumen) -->
+<div class="slide-container" id="slide9">
     <div class="content-area">
-        <div class="two-column rounded-image-layout">
-            <div>
+        <div class="square-image-layout">
                 <div class="image-wrapper">
-                    <img src="https://placehold.co/400x400/10b981/ffffff?text=Meme+Dev+Confundido" alt="Meme de Mr. Krabs confundido">
-                </div>
-            </div>
-            <div>
-                <h3>¿Cero `useEffect`?</h3>
-                <p>...al lograr reactividad, validación de formularios y actualizaciones en tiempo real sin un solo `useEffect`, `useState`, `Redux`, `webpack` ni la dependencia de `node_modules`.</p>
-            </div>
+                    <img src="./andamaquina.jpg" alt="Meme de un diagrama de arquitectura increíblemente complejo">
+        </div>
         </div>
     </div>
 </div>
+
 
 <!-- Slide 21: Tiled_Images -->
 <div class="slide-container" id="slide21">
