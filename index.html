@@ -271,6 +271,78 @@
     </div>
 </div>
 
+<!-- Slide 12a: ¿Qué es HTMX? -->
+<div class="slide-container" id="slide12a">
+    <h2 class="slide-title">¿Qué es HTMX?</h2>
+    <div class="content-area">
+        <div class="two-column image-right-layout">
+            <div>
+                <ul>
+                    <li><strong>HTMX</strong> es una librería JavaScript pequeña (14kB) que permite crear aplicaciones web interactivas usando HTML.</li>
+                    <li>En lugar de escribir JavaScript complejo, usás <strong>atributos HTML</strong> para manejar interacciones.</li>
+                    <li>Permite hacer peticiones AJAX, actualizar partes de la página y manejar eventos sin recargar.</li>
+                    <li><strong>¿Por qué es genial?</strong> Reduce drásticamente la complejidad del frontend, manteniendo el poder de las aplicaciones modernas.</li>
+                    <li>No reemplaza a JavaScript, sino que lo simplifica enormemente.</li>
+                </ul>
+            </div>
+            <div>
+                <div class="image-wrapper">
+                    <img src="https://placehold.co/400x400/10b981/ffffff?text=HTMX+Logo" alt="Logo de HTMX">
+                </div>
+                <p style="text-align: center; margin-top: 10px; font-size: 14px;">htmx.org - "Accessibilidad primero, potencia después"</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Slide 12b: Ejemplo de HTMX en Acción -->
+<div class="slide-container" id="slide12b">
+    <h2 class="slide-title">Ejemplo de HTMX en Acción</h2>
+    <div class="content-area">
+        <div class="two-column-code">
+            <div>
+                <h3>HTML con HTMX:</h3>
+                <pre class="code-example"><span class="comment">&lt;!-- Botón que hace una petición POST --&gt;</span>
+&lt;<span class="tag">button</span>
+  <span class="attr">hx-post</span>=<span class="string">"/api/like/123"</span>
+  <span class="attr">hx-target</span>=<span class="string">"#likes-count"</span>
+  <span class="attr">hx-swap</span>=<span class="string">"innerHTML"</span>
+&gt;
+  👍 Me gusta
+&lt;/<span class="tag">button</span>&gt;
+
+&lt;<span class="tag">div</span> <span class="attr">id</span>=<span class="string">"likes-count"</span>&gt;
+  42 likes
+&lt;/<span class="tag">div</span>&gt;
+
+<span class="comment">&lt;!-- Input que busca en tiempo real --&gt;</span>
+&lt;<span class="tag">input</span>
+  <span class="attr">type</span>=<span class="string">"text"</span>
+  <span class="attr">name</span>=<span class="string">"q"</span>
+  <span class="attr">hx-get</span>=<span class="string">"/search"</span>
+  <span class="attr">hx-target</span>=<span class="string">"#results"</span>
+  <span class="attr">hx-trigger</span>=<span class="string">"keyup delay:300ms"</span>
+  <span class="attr">placeholder</span>=<span class="string">"Buscar..."</span>
+&gt;
+
+&lt;<span class="tag">div</span> <span class="attr">id</span>=<span class="string">"results"</span>&gt;
+  <span class="comment">&lt;!-- Aquí aparecen los resultados de búsqueda --&gt;</span>
+&lt;/<span class="tag">div</span>&gt;</pre>
+            </div>
+            <div>
+                <h3>¿Qué hace cada atributo?</h3>
+                <ul style="font-size: 18px; line-height: 1.6;">
+                    <li><code>hx-post</code>: Envía una petición POST a la URL</li>
+                    <li><code>hx-target</code>: Dónde actualizar el contenido</li>
+                    <li><code>hx-swap</code>: Cómo actualizar (innerHTML, outerHTML, etc.)</li>
+                    <li><code>hx-trigger</code>: Cuándo disparar (click, keyup, etc.)</li>
+                    <li><strong>Resultado:</strong> Interactividad sin JavaScript custom</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Slide 13: Tiled_Text_With_Icons (4 tiles) -->
 <div class="slide-container" id="slide13">
     <h2 class="slide-title">¿Cómo Funciona Esta Propuesta?</h2>
@@ -323,14 +395,14 @@
                 <h3>Tu Template de Django:</h3>
                 <pre class="code-example"><span class="comment">&lt;!-- Un botón normal, pero con superpoderes --&gt;</span>
 &lt;<span class="tag">button</span> 
-  <span class="attr">hx-post</span>=<span class="string">"/like/123"</span> 
-  <span class="attr">hx-target</span>=<span class="string">"#like-count"</span>
+  <span class="attr">hx-post</span>=<span class="string">"/ovejas-count/123"</span> 
+  <span class="attr">hx-target</span>=<span class="string">"#oveja-count"</span>
 &gt;
   Me Gusta
 &lt;/<span class="tag">button</span>&gt;
 
-&lt;<span class="tag">span</span> <span class="attr">id</span>=<span class="string">"like-count"</span>&gt;
-  0 Me Gusta
+&lt;<span class="tag">span</span> <span class="attr">id</span>=<span class="string">"oveja-count"</span>&gt;
+  0 Ovejas
 &lt;/<span class="tag">span</span>&gt;</pre>
             </div>
         </div>
@@ -621,8 +693,8 @@ contenido del span original, ¡sin recargar!
     const prevButton = document.getElementById('prev-button');
     const nextButton = document.getElementById('next-button');
     
-    // totalSlides ahora es 26, pero la última (índice 25) es la vacía.
-    // La última *real* es la 25 (índice 24), la de Q&A.
+    // totalSlides es slides.length - 1, la última es la vacía.
+    // La última real es la de agradecimientos (índice totalSlides - 1)
     const totalSlides = slides.length - 1; 
     let currentSlide = 0; 
 

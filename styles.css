@@ -476,7 +476,6 @@ pre.code-example {
     font-size: 17px;
     white-space: pre-wrap;
     line-height: 1.5;
-    height: 100%;
 }
 pre.code-example .comment {
     color: #999;
