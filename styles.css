@@ -108,7 +108,7 @@ body {
   font-size: 48px;
   font-weight: 700;
   margin-bottom: 40px;
-  text-align: left;
+  text-align: center;
   width: 100%;
   color: #10b981;
 }
@@ -459,11 +459,17 @@ body {
   font-size: 28px;
   color: #f0f0f0;
 }
-.qa-layout .contact-info {
+.contact-info a{
   color: #cccccc;
   font-size: 22px;
   margin-top: 40px;
 }
+.contact-info{
+  color: #cccccc;
+  font-size: 22px;
+  margin-top: 40px;
+}
+
 
 /* --- ESTILOS PARA CÓDIGO --- */
 pre.code-example {
@@ -561,7 +567,7 @@ pre.code-example .py-func {
     background: linear-gradient(90deg, #10b981, #059669);
 }
 .bar-react {
-    background: linear-gradient(90deg, #3b82f6, #2563eb);
+    background: #fa4d4d;
 }
 .chart-legend {
     display: flex;
@@ -585,7 +591,7 @@ pre.code-example .py-func {
     background-color: #10b981;
 }
 .legend-react {
-    background-color: #3b82f6;
+    background-color: #ff4d4d;
 }
 
 /* * * ESTILOS PARA NAVEGACIÓN * * */
