@@ -27,6 +27,11 @@
 <!-- Slide 9: El Monstruo (Resumen) -->
 <div class="slide-container" id="slide1">
     <div class="content-area">
+    </div>
+</div>
+
+<div class="slide-container" id="slide1">
+    <div class="content-area">
         <div class="two-column rounded-image-layout">
             <div>
                 <div class="image-wrapper">
@@ -698,23 +703,22 @@ contenido del span original, ¡sin recargar!
 
 
 <!-- AUDIO ELEMENTS -->
-<audio id="audio0" src="voiceoff/1_juancitoidea.mp3" preload="auto"></audio>
-<audio id="audio1" src="voiceoff/2_app_ovejitas.mp3" preload="auto"></audio>
-<audio id="audio2" src="voiceoff/3_backend.mp3" preload="auto"></audio>
-<audio id="audio3" src="voiceoff/3_sento.mp3" preload="auto"></audio>
-<audio id="audio4" src="voiceoff/4_front.mp3" preload="auto"></audio>
-<audio id="audio5" src="voiceoff/4semanasmastarde.mp3" preload="auto"></audio>
-<audio id="audio6" src="voiceoff/5_apiyya.mp3" preload="auto"></audio>
-<audio id="audio7" src="voiceoff/5horasdespues.mp3" preload="auto"></audio>
-<audio id="audio8" src="voiceoff/6_matar_react_efecto.mp3" preload="auto"></audio>
-<audio id="audio9" src="voiceoff/chequeoactualizo.mp3" preload="auto"></audio>
-<audio id="audio10" src="voiceoff/chequeoactualizo.mp3" preload="auto"></audio>
-<audio id="audio11" src="voiceoff/chequeoactualizo.mp3" preload="auto"></audio>
-<audio id="audio12" src="voiceoff/chequeoactualizo.mp3" preload="auto"></audio>
-<audio id="audio13" src="voiceoff/chequeoactualizo.mp3" preload="auto"></audio>
-<audio id="audio14" src="voiceoff/chequeoactualizo.mp3" preload="auto"></audio>
-<audio id="audio15" src="voiceoff/chequeoactualizo.mp3" preload="auto"></audio>
-<audio id="audio16" src="voiceoff/6_matar_react_efecto.mp3" preload="auto"></audio>
+<audio id="audio1" src="voiceoff/slide1.mp3" preload="auto"></audio>
+<audio id="audio2" src="voiceoff/slide2.mp3" preload="auto"></audio>
+<audio id="audio3" src="voiceoff/slide3.mp3" preload="auto"></audio>
+<audio id="audio4" src="voiceoff/slide4.mp3" preload="auto"></audio>
+<audio id="audio5" src="voiceoff/slide5.mp3" preload="auto"></audio>
+<audio id="audio6" src="voiceoff/slide6.mp3" preload="auto"></audio>
+<audio id="audio7" src="voiceoff/slide7.mp3" preload="auto"></audio>
+<audio id="audio8" src="voiceoff/slide8.mp3" preload="auto"></audio>
+<audio id="audio9" src="voiceoff/slide9.mp3" preload="auto"></audio>
+<audio id="audio10" src="voiceoff/slide10.mp3" preload="auto"></audio>
+<audio id="audio11" src="voiceoff/slide11.mp3" preload="auto"></audio>
+<audio id="audio12" src="voiceoff/slide12.mp3" preload="auto"></audio>
+<audio id="audio13" src="voiceoff/slide13.mp3" preload="auto"></audio>
+<audio id="audio14" src="voiceoff/slide14.mp3" preload="auto"></audio>
+<audio id="audio15" src="voiceoff/slide15.mp3" preload="auto"></audio>
+<audio id="audio16" src="voiceoff/slide16.mp3" preload="auto"></audio>
 
 <!-- SCRIPT DE NAVEGACIÓN (Sin cambios) -->
 <script>
@@ -738,11 +742,13 @@ contenido del span original, ¡sin recargar!
         slides[index].classList.add('active-slide');
       }
 
-      // Play audio for slides 0-9
-      const audio = document.getElementById(`audio${index}`);
-      if (audio) {
-        audio.currentTime = 0;
-        audio.play();
+      // Play audio for slides 1-16
+      if (index >= 1 && index <= 16) {
+        const audio = document.getElementById(`audio${index}`);
+        if (audio) {
+          audio.currentTime = 0;
+          audio.play();
+        }
       }
 
       // Ocultar 'prev' en la primera (índice 0)
