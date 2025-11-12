@@ -53,7 +53,6 @@
             </div>
             <div>
                 <h3>Una app para contar ovejas</h3>
-                <p>Bueno... Juancito era medio bolu.., eh..era programador  Juancito.</p>
             </div>
         </div>
     </div>
@@ -68,7 +67,7 @@
                 </div>
             </div>
             <div>
-                <h3>Vamos a empezar con el backendcito, algo simple...en nodejs</h3>
+                <h3>"Vamos a empezar con el backendcito, algo simple...en nodejs"</h3>
             </div>
         </div>
     </div>
@@ -178,7 +177,7 @@
                 </div>
             </div>
             <div>
-        <h3>A ver sigamos en donde quedé, actualicemos las librerías...</h3>
+        <h3>"A ver sigamos en donde quedé, actualicemos las dependencias..."</h3>
             </div>
         </div>
     </div>
@@ -244,9 +243,11 @@
             </div>
             <div>
                 <!-- Imagen/Meme -->
+        <div class="square-image-layout">
                 <div class="image-wrapper">
-                    <img src="https://placehold.co/400x400/10b981/ffffff?text=Ilustracion+Sobreenjendria+al+toke!" alt="Meme de Juicero representando sobre-ingeniería">
+                    <img src="./spas.png" alt="Meme de un diagrama de arquitectura increíblemente complejo">
                 </div>
+            </div>
             </div>
         </div>
     </div>
@@ -256,8 +257,16 @@
 <div class="slide-container" id="slide18">
     <div class="section-title-layout">
         <hr>
-        <h2>La Alianza Ideal</h2>
-        <p class="subtitle">Django &lt;3 HTMX<br>Rescatando lo mejor de antes, pero con la agilidad de hoy.</p>
+        <h2 class="slide-title">La Alianza Ideal</h2>
+
+        <p class="subtitle">Django + HTMX
+                <!-- Imagen/Meme -->
+        <div class="square-image-layout">
+                <div class="image-wrapper">
+                    <img src="./djangohtmxhappy.jpg" alt="Meme de un diagrama de arquitectura increíblemente complejo">
+                </div>
+                </div>
+
     </div>
 </div>
 
@@ -388,7 +397,7 @@
   <span class="attr">hx-post</span>=<span class="string">"/ovejas-count/123"</span> 
   <span class="attr">hx-target</span>=<span class="string">"#oveja-count"</span>
 &gt;
-  Me Gusta
+  Contar
 &lt;/<span class="tag">button</span>&gt;
 
 &lt;<span class="tag">span</span> <span class="attr">id</span>=<span class="string">"oveja-count"</span>&gt;
@@ -445,6 +454,7 @@ contenido del span original, ¡sin recargar!
             <h3 style="font-size: 28px; margin-bottom: 30px;">HTMX: "Menos JavaScript, Más HTML"</h3>
             <ul>
                 <li><i class="fa-solid fa-bolt"></i> <div><strong>Manejo de Eventos:</strong> ¿Querés que un 'submit' salte con un 'change' o 'keyup'?<br><strong><code>hx-trigger="change"</code></strong> o <strong><code>hx-trigger="keyup delay:500ms"</code></strong></div></li>
+                <li><i class="fa-solid fa-bolt"></i> <div><strong>Eventos desde otros elementos:</strong> ¿Querés que un div total se actualice cada vez que cambiamos cualquiera de los inputs. Podemos hacer escuchar un selector de css con  <br><strong><code>hx-trigger="[evento] from:[selector CSS]"</code></strong></div></li>
                 <li><i class="fa-solid fa-hourglass-half"></i> <div><strong>Polling:</strong> ¿Actualizar un div cada 5 segundos? (¡Genial para notificaciones en vivo!)<br><strong><code>hx-trigger="every 5s"</code></strong></div></li>
                 <li><i class="fa-solid fa-recycle"></i> <div><strong>Validación de Formularios:</strong> Validar campos *antes* de mandar, sin recargar y solo reemplazando el error.<br><strong><code>hx-swap="outerHTML"</code></strong></div></li>
                 <li><i class="fa-solid fa-cogs"></i> <div><strong>Tenés la ventaja:</strong> El 90% de lo que hacías con JS para "manipular el DOM" ahora está en atributos HTML declarativos, ¡súper simple!</div></li>
@@ -477,6 +487,7 @@ contenido del span original, ¡sin recargar!
         <div class="bullet-list">
             <ul>
                 <li><i class="fa-solid fa-person-running"></i> <div><strong>Trabajás en un solo lugar:</strong> Te concentrás en tu proyecto Django. Se terminan los cambios de contexto entre repositorios, lenguajes y compilaciones.</div></li>
+                <li><i class="fa-solid fa-person-running"></i> <div><strong>Estabilidad del ecosistema:</strong> No lidias con incompatibilidades, es todo mucho más robusto y production ready. Mantenible.</div></li>
                 <li><i class="fa-solid fa-book"></i> <div><strong>Aprendés rápido:</strong> Si ya conocés Django y sus templates, ya tenés el 80% hecho, además podés usar todo el poder de los forms y sus validaciones. HTMX lo incorporás en una tarde.</div></li>
                 <li><i class="fa-solid fa-rocket"></i> <div><strong>Agilidad:</strong> Sacás productos y características al mercado muchísimo más rápido. Es ideal para MVPs, startups y equipos pequeños, PWAS y TWAS.</div></li>
             </ul>
@@ -497,18 +508,21 @@ contenido del span original, ¡sin recargar!
         </div>
     </div>
 </div>
-
-<!-- Slide 9: El Monstruo (Resumen) -->
 <div class="slide-container" id="slide27b">
-    <div class="content-area">
-        <h2>Y entonces?</h2>
+    <div class="section-title-layout">
+        <hr>
+        <h2 class="slide-title">¿Y entonces?</h2>
+
         <div class="square-image-layout">
+        <p class="subtitle">Django + HTMX
                 <div class="image-wrapper">
-                    <img src="./andamaquina.jpg" alt="Meme de un diagrama de arquitectura increíblemente complejo">
-        </div>
-        </div>
+                    <img src="./andamaquina.jpg" alt="Meme de anda máquina nomás">
+                </div>
+                </div>
+
     </div>
 </div>
+
 <!-- Slide 21: Comparison -->
 <div class="slide-container" id="slide28">
     <h2 class="slide-title">¿Dónde sí y dónde no?</h2>
@@ -523,6 +537,8 @@ contenido del span original, ¡sin recargar!
                     <li>Apps administrativas</li>
                     <li>MVPs y prototipos rápidos</li>
                     <li>Sitios con contenido dinámico simple</li>
+                    <li>PWA</li>
+                    <li>TWAS</li>
                 </ul>
             </div>
             <div>
@@ -532,38 +548,12 @@ contenido del span original, ¡sin recargar!
                     <li>Juegos en tiempo real</li>
                     <li>Apps offline-first complejas</li>
                     <li>Interfaces que requieren manipulación DOM intensiva</li>
-                    <li>Cuando necesitas un ecosistema JS maduro</li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
  
-<!-- Slide 22: Tiled_Text_With_Icons -->
-<div class="slide-container" id="slide29">
-    <div class="content-area">
-    <h2 class="slide-title">¿Te Interesa? Empezá por Acá</h2>
-        <br/>
-        <div class="tiled-content">
-            <div class="tile">
-                <div class="icon"><i class="fa-solid fa-book-open"></i></div>
-                <h3>htmx.org</h3>
-                <p>La documentación oficial es excelente. Es directa y está llena de ejemplos que podés copiar y pegar.</p>
-            </div>
-            <div class="tile">
-                <div class="icon"><i class="fa-brands fa-youtube"></i></div>
-                <h3>Curso Htmx y Django de BugBytes</h3>
-                    <img src="qrbugbytes.png" alt="Screenshot de una sección de comentarios en vivo">
-            </div>
-            <div class="tile">
-                <div class="icon"><i class="fa-solid fa-baby"></i></div>
-                <h3>Empezá de a poco</h3>
-                <p>No te apures migrando todo. Probá con un dashboard simple, un sistema de 'me gusta' o un formulario. Vas a notar la velocidad al instante.</p>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Slide 23: Comparación de Gráficos -->
 <div class="slide-container" id="slide30">
     <h2 class="slide-title">A Ver los Números: HTMX vs. React</h2>
@@ -638,16 +628,29 @@ contenido del span original, ¡sin recargar!
 
     </div>
 </div>
-
-<!-- Slide 24: Quote -->
-<div class="slide-container" id="slide31">
-    <h2 class="slide-title">La Conclusión</h2>
-    <div class="content-area">
-        <div class="quote-layout">
-            <blockquote>No busca *reemplazar* a las SPAs, pero sí es una opción muy potente y efectiva.</blockquote>
-            <cite>— Una herramienta más en la mochila (¡y mirá qué herramienta!).</cite>
+<!-- Slide 22: Tiled_Text_With_Icons -->
+<div class="slide-container" id="slide29">
+    <div class="section-title-layout">
+        <hr>
+    <h2 class="slide-title">¿Te Interesa? Empezá por Acá</h2>
+        <div class="tiled-content">
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-book-open"></i></div>
+                <h3>htmx.org</h3>
+                <p>La documentación oficial es excelente. Es directa y está llena de ejemplos que podés copiar y pegar.</p>
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-brands fa-youtube"></i></div>
+                <h3>Curso Htmx y Django de BugBytes</h3>
+                    <img src="qrbugbytes.png" alt="Screenshot de una sección de comentarios en vivo">
+            </div>
+            <div class="tile">
+                <div class="icon"><i class="fa-solid fa-baby"></i></div>
+                <h3>Empezá de a poco</h3>
+                <p>No te apures migrando todo. Probá con un dashboard simple, un sistema de 'me gusta' o un formulario. Vas a notar la velocidad al instante.</p>
+            </div>
         </div>
-    </div>
+</div>
 </div>
 
 <!-- Slide 25: Q&A -->
