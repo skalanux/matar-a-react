@@ -471,6 +471,27 @@ body {
 }
 
 
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#matar-react, #matar-react-sub {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
 /* --- ESTILOS PARA CÓDIGO --- */
 pre.code-example {
     background-color: #2a2a2a;

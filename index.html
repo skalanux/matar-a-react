@@ -710,6 +710,36 @@ contenido del span original, ¡sin recargar!
     let currentSlide = 0; 
 
     function showSlide(index) {
+      // Fade-in setup for slide16 (index 15) before showing
+      if (index === 16) {
+        console.log('matar-react');
+        debugger;
+        const matarReact = document.getElementById('matar-react');
+        const matarReactSub = document.getElementById('matar-react-sub');
+        if (matarReact) {
+          matarReact.style.opacity = '0';
+          matarReact.style.transform = 'translateY(20px)';
+        }
+        if (matarReactSub) {
+          matarReactSub.style.opacity = '0';
+          matarReactSub.style.transform = 'translateY(20px)';
+        }
+      } else {
+        // Reset for other slides
+        const matarReact = document.getElementById('matar-react');
+        const matarReactSub = document.getElementById('matar-react-sub');
+        if (matarReact) {
+          matarReact.classList.remove('fade-in');
+          matarReact.style.opacity = '';
+          matarReact.style.transform = '';
+        }
+        if (matarReactSub) {
+          matarReactSub.classList.remove('fade-in');
+          matarReactSub.style.opacity = '';
+          matarReactSub.style.transform = '';
+        }
+      }
+
       slides.forEach((slide) => {
         slide.classList.remove('active-slide');
       });
@@ -724,6 +754,22 @@ contenido del span original, ¡sin recargar!
         if (audio) {
           audio.currentTime = 0;
           audio.play();
+        }
+      }
+
+      // Start fade-in animations for slide16
+      if (index === 15) {
+        const matarReact = document.getElementById('matar-react');
+        const matarReactSub = document.getElementById('matar-react-sub');
+        if (matarReact) {
+          setTimeout(() => {
+            matarReact.classList.add('fade-in');
+          }, 2000); // 2 seconds
+        }
+        if (matarReactSub) {
+          setTimeout(() => {
+            matarReactSub.classList.add('fade-in');
+          }, 4000); // 4 seconds
         }
       }
 
